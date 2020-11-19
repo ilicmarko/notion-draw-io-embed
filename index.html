@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Primary Meta Tags -->
+  <title>Embed Draw.io in Notion.so</title>
+  <meta name="title" content="Embed Draw.io in Notion.so">
+  <meta name="description"
+    content="Quick tool to help you transform draw.io (diagrams.net) embeds to Notion compatible embeds.">
+
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://notion-draw-io-embed.netlify.app/">
+  <meta property="og:title" content="Embed Draw.io in Notion.so">
+  <meta property="og:description"
+    content="Quick tool to help you transform draw.io (diagrams.net) embeds to Notion compatible embeds.">
+  <meta property="og:image" content="og.png">
+
+  <!-- Twitter -->
+  <meta property="twitter:card" content="summary_large_image">
+  <meta property="twitter:url" content="https://notion-draw-io-embed.netlify.app/">
+  <meta property="twitter:title" content="Embed Draw.io in Notion.so">
+  <meta property="twitter:description"
+    content="Quick tool to help you transform draw.io (diagrams.net) embeds to Notion compatible embeds.">
+  <meta property="twitter:image" content="og.png">
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      min-height: 100vh;
+    }
+
+    body {
+      display: flex;
+      align-items: center;
+    }
+
+    .wrapper {
+      width: 100%;
+    }
+
+    h1 {
+      font-size: 56px;
+      text-align: center;
+    }
+
+    .container {
+      max-width: 560px;
+      width: 95%;
+      margin: 0 auto;
+    }
+
+    label {
+      display: block;
+      margin: 1em 0;
+    }
+
+    input {
+      background: #fff;
+      border: 1px solid #dfe1e5;
+      box-shadow: none;
+      border-radius: 4px;
+      height: 44px;
+      padding: 0 12px;
+      width: 100%;
+    }
+
+    input[readonly] {
+      background-color: #dfe1e5;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="wrapper">
+    <h1>Embed Draw.io in Notion.so</h1>
+    <div class="container">
+      <label for="link">Paste your draw.io embed link</label>
+      <input type="text" id="link" placeholder="Paste your draw.io link" class="embed-input">
+
+      <div id="outputBox">
+        <label for="output">Notion ready embed</label>
+        <input type="text" placeholder="Enter your draw.io link in the box above" id="output" readonly>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const linkInput = document.getElementById('link');
+    const linkOutput = document.getElementById('output');
+
+    function onLinkChange() {
+      try {
+        const url = new URL(linkInput.value);
+        const hostname = url.hostname;
+
+        if (!hostname.includes('diagrams.net')) throw new Error('The app only works with diagrams.net');
+        if (!hostname.includes('viewer.diagrams.net')) throw new Error(`It looks like you didn't check the Lightbox checkbox. Notion can only embed the read only (viewer) app.`)
+
+        const output = linkInput.value.replace('#U', '&open=U');
+
+        linkOutput.value = output;
+        linkOutput.select();
+
+      } catch (e) {
+        console.error(e);
+      }
+    }
+
+    if (linkInput) {
+      linkInput.addEventListener('input', onLinkChange)
+    }
+  </script>
+</body>
+
+</html>
